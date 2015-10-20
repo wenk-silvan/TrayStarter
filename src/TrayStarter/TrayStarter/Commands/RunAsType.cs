@@ -1,27 +1,21 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="RunAsType.cs" company="Schindler Elevator Ltd.">
-//    Copyright (c) 2015 Schindler Elevator Ltd. All rights reserved.
-//    
-//    This software is the confidential and proprietary information of
-//    Schindler Elevator Ltd. ("Confidential Information"). You shall not disclose
-//    such confidential information and shall use it only in accordance with
-//    the terms of the license agreement you entered into with Schindler Ltd.
-// </copyright>
-//-----------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace TrayStarter.Commands
 {
+   /// <summary>
+   /// The runtype of the command.
+   /// </summary>
    public enum RunAsType
    {
-      [XmlEnum("admin")]
-      Admin = 1,
+      /// <summary>
+      /// A command with this runtype, will be executed with administrator priviledges.
+      /// </summary>
+      [XmlEnum("administrator")]
+      Administrator,
+
+      /// <summary>
+      /// A command with this runtype, will be executed with user priviledges.
+      /// </summary>
       [XmlEnum("user")]
       User
    }
