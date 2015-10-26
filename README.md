@@ -9,6 +9,9 @@ A C# written program, that invokes batch commands from the windows tray bar.
 Setting | Default Value | Description
 --------|---------------|------------
 CommandsFile | ./Commands.xml | The commands file to load
+Username | ./App.config | The username of this useraccount 
+Domain | ./App.config | The domain of this useraccount
+Password | ./App.config | The password of this useraccount
 
 ## License
 MIT
