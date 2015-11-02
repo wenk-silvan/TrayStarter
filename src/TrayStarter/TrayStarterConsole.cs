@@ -61,10 +61,11 @@ namespace TrayStarter
       {
          var startInfo = new ProcessStartInfo();
          startInfo.FileName = "cmd.exe";
-         startInfo.UseShellExecute = false;
+         startInfo.Arguments = string.Format("/C \"{0}\"", command.Command);
          startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
          startInfo.RedirectStandardOutput = true;
-         startInfo.Arguments = string.Format("/C \"{0}\"", command.Command);
+         startInfo.UseShellExecute = false;
+         startInfo.CreateNoWindow = true;
          return startInfo;
       }
    }
