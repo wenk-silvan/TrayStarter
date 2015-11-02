@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<commands>
-  <commanditem name="OpenTempDir" runas="administrator">
-    <command>explorer %tmp%</command>
-  </commanditem>
-</commands>

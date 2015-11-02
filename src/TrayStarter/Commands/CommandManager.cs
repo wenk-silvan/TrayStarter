@@ -30,6 +30,9 @@ namespace TrayStarter.Commands
          get { return CommandManager.instance ?? (CommandManager.instance = new CommandManager()); }
       }
 
+      /// <summary>
+      /// Gets the commands and Sets key and value for the commands
+      /// </summary>
       public ICollection<string> Commands { get { return this.commands.Keys; } }
 
       /// <summary>

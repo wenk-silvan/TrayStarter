@@ -1,11 +1,8 @@
-﻿using System;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
-using System.Drawing;
-using System.ComponentModel;
-using System.Runtime.Serialization;
 using TrayStarter.Commands;
-using System.Diagnostics;
 
 namespace TrayStarter
 {
@@ -16,52 +13,53 @@ namespace TrayStarter
          this.DataContext = this;
          this.Hide();
 
-         //Create NotifyIcon
-         NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+         NotifyIcon notifyIcon = CreateNotifyIcon();
+         CreateContextMenu(notifyIcon);
+
+         this.InitializeComponent();
+      }
+
+      private static NotifyIcon CreateNotifyIcon()
+      {
+         NotifyIcon notifyIcon = new NotifyIcon();
          notifyIcon.Text = "TrayStarter";
-         notifyIcon.Icon = new System.Drawing.Icon("Resources/captain-america.ico");
+         notifyIcon.Icon = new Icon("Resources/captain-america.ico");
          notifyIcon.Visible = true;
+         return notifyIcon;
+      }
 
-
-         //Create ContextMenu
+      private void CreateContextMenu(NotifyIcon notifyIcon)
+      {
          var contextmenu = new ContextMenu();
-         notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
-         var menuItem1 = new System.Windows.Forms.MenuItem("Exit", Exit_Click);
-         notifyIcon.ContextMenu.MenuItems.Add(menuItem1);
-
+         notifyIcon.ContextMenu = new ContextMenu();
          foreach (var commandName in CommandManager.Instance.Commands)
          {
-            notifyIcon.ContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem(commandName, ExecuteCommand_Click));
+            var menuitem = new MenuItem(commandName, (s, e) => this.ExecuteCommand(commandName));
+            notifyIcon.ContextMenu.MenuItems.Add(menuitem);
          }
-
-         InitializeComponent();
+         var menuItem = new MenuItem("Exit", (s, e) => this.Exit_Click(notifyIcon));
+         notifyIcon.ContextMenu.MenuItems.Add(menuItem);
       }
 
-      private void ExecuteCommand_Click(object sender, EventArgs e)
+      /// <summary>
+      /// This function will execute the pressed command in the context menu.
+      /// </summary>
+      /// <param name="commandName"></param>
+      private void ExecuteCommand(string commandName)
       {
-         try
+         var command = CommandManager.Instance[commandName];
+         var startInfo = MainWindow.CreateStartInfo(command);
+         switch (command.RunAs)
          {
-            var input = "OpenTempDir";
-            var command = CommandManager.Instance[input];
-            var startInfo = MainWindow.CreateStartInfo(command);
-            switch (command.RunAs)
-            {
-               case RunAsType.Administrator: Process.Start(startInfo); break;
-               case RunAsType.User:
-                  ProcessHelper.StartProcessAsUser(startInfo,
-                     TrayStarter.Properties.Settings.Default.Domain,
-                     TrayStarter.Properties.Settings.Default.UserName,
-                     TrayStarter.Properties.Settings.Default.Password);
-                  break;
-            }
-         }
-         catch (TrayStarterException ex)
-         {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine();
+            case RunAsType.Administrator: Process.Start(startInfo); break;
+            case RunAsType.User:
+               ProcessHelper.StartProcessAsUser(startInfo,
+                  TrayStarter.Properties.Settings.Default.Domain,
+                  TrayStarter.Properties.Settings.Default.UserName,
+                  TrayStarter.Properties.Settings.Default.Password);
+               break;
          }
       }
-
 
       /// <summary>
       /// Creates the start information for the process.
@@ -78,8 +76,12 @@ namespace TrayStarter
          return startInfo;
       }
 
-      private void Exit_Click(object sender, EventArgs e)
+      /// <summary>
+      /// This event closes the program
+      /// </summary>
+      private void Exit_Click(NotifyIcon notifyicon)
       {
+         notifyicon.Visible = false;
          this.Close();
       }
    }

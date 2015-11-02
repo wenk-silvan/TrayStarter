@@ -1,9 +1,7 @@
-﻿<Window 
+﻿<Window
    x:Class="TrayStarter.MainWindow"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
    xmlns:l="clr-namespace:TrayStarter"
    Title="MainWindow" Height="350" Width="525">
-   <StackPanel>
-   </StackPanel>
 </Window>
