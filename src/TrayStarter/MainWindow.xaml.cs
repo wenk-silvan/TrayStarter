@@ -13,15 +13,15 @@ namespace TrayStarter
          this.DataContext = this;
          this.Hide();
 
-         NotifyIcon notifyIcon = CreateNotifyIcon();
-         CreateContextMenu(notifyIcon);
+         var notifyIcon = MainWindow.CreateNotifyIcon();
+         this.CreateContextMenu(notifyIcon);
 
          this.InitializeComponent();
       }
 
       private static NotifyIcon CreateNotifyIcon()
       {
-         NotifyIcon notifyIcon = new NotifyIcon();
+         var notifyIcon = new NotifyIcon();
          notifyIcon.Text = "TrayStarter";
          notifyIcon.Icon = new Icon("Resources/captain-america.ico");
          notifyIcon.Visible = true;
