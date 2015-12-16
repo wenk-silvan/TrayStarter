@@ -1,5 +1,5 @@
 # TrayStarter
-![Version](https://img.shields.io/badge/version-V0.0.0-red.svg)
+![Version](https://img.shields.io/badge/version-V1.0.0-red.svg)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Language](https://img.shields.io/badge/language-C%23%20.Net%204.5-blue.svg)](http://php.net/)
 
