@@ -13,5 +13,36 @@ Username | ./App.config | The username of this useraccount
 Domain | ./App.config | The domain of this useraccount
 Password | ./App.config | The password of this useraccount
 
+### Example Commands File
+```
+<?xml version="1.0" encoding="utf-8" ?>
+<commands>
+   <commanditem name="OpenExplorer" runas="administrator">
+      <command>explorer</command>
+   </commanditem>
+   <commanditem name="Github" runas="user">
+      <command>start https://github.com/</command>
+   </commanditem>
+</commands>
+```
+
+### Example App Config File
+```
+<configuration>
+  ...
+  ...
+   <userSettings>
+    <TrayStarter.Properties.Settings>
+       <setting name="CommandsFile" serializeAs="String">
+          <value>./Commands.xml</value>
+       </setting>
+       <setting name="UserName" serializeAs="String">
+          <value>Foo</value>
+       </setting>
+      </TrayStarter.Properties.Settings>
+   </userSettings>
+</configuration>
+```
+
 ## License
 MIT
