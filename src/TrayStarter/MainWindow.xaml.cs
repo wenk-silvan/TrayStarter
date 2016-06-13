@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using TrayStarter.Commands;
@@ -21,21 +23,33 @@ namespace TrayStarter
 
       private static NotifyIcon CreateNotifyIcon()
       {
-         var notifyIcon = new NotifyIcon();
-         notifyIcon.Text = "TrayStarter";
-         notifyIcon.Icon = new Icon("Resources/captain-america.ico");
-         notifyIcon.Visible = true;
-         return notifyIcon;
+         return new NotifyIcon
+         {
+            Text = "TrayStarter",
+            Icon = new Icon("Resources/captain-america.ico"),
+            Visible = true
+         };
       }
 
       private void CreateContextMenu(NotifyIcon notifyIcon)
       {
          var contextmenu = new ContextMenu();
          notifyIcon.ContextMenu = new ContextMenu();
-         foreach (var commandName in CommandManager.Instance.Commands)
+         try { 
+            foreach (var commandName in CommandManager.Instance.Commands)
+            {
+               var menuitem = new MenuItem(commandName, (s, e) => this.ExecuteCommand(commandName));
+               notifyIcon.ContextMenu.MenuItems.Add(menuitem);
+            }
+         }
+         catch (FileNotFoundException ex)
          {
-            var menuitem = new MenuItem(commandName, (s, e) => this.ExecuteCommand(commandName));
-            notifyIcon.ContextMenu.MenuItems.Add(menuitem);
+            MessageBoxResult result = System.Windows.MessageBox.Show(
+               ex.Message.ToString() + "\n\nPlease create a command file before you launch the application. Take further information from the readme.txt file.", 
+               "Missing Commandsfile", 
+               MessageBoxButton.OK, 
+               MessageBoxImage.Error);
+            ex.ToString();
          }
          var menuItem = new MenuItem("Exit", (s, e) => this.Exit_Click(notifyIcon));
          notifyIcon.ContextMenu.MenuItems.Add(menuItem);
